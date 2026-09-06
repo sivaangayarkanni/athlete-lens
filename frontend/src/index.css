@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: dark; }
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(200, 245, 66, 0.08), transparent 50%),
+    radial-gradient(900px 500px at 100% 0%, rgba(125, 255, 195, 0.06), transparent 45%),
+    #061018;
+}
+
+.glass {
+  background: linear-gradient(180deg, rgba(18, 36, 48, 0.86), rgba(8, 18, 26, 0.9));
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
+}
+
+input, select, textarea {
+  background: #07141c;
+  border: 1px solid #1c3344;
+  color: #e8f0f4;
+}
