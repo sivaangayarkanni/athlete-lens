@@ -1,0 +1,9 @@
+services:
+  athlete-lens:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      APP_ENV: production
+      DATABASE_URL: sqlite:////tmp/athlete_lens.db
+      MODEL_DIR: /tmp/athlete_lens_models
