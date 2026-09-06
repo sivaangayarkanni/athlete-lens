@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Athlete Lens — Performance Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ["Sora","sans-serif"], display: ["Syne","Sora","sans-serif"] },
+          colors: { ink:"#061018", panel:"#0c1a24", line:"#1c3344", lime:"#c8f542", mint:"#7dffc3", ember:"#ffb25a" }
+        }
+      }
+    }
+  </script>
+  <style>
+    body{background:radial-gradient(1200px 600px at 10% -10%,rgba(200,245,66,.08),transparent 50%),radial-gradient(900px 500px at 100% 0%,rgba(125,255,195,.06),transparent 45%),#061018;color:#e8f0f4;font-family:Sora,sans-serif}
+    .glass{background:linear-gradient(180deg,rgba(18,36,48,.88),rgba(8,18,26,.92));border:1px solid rgba(255,255,255,.06);box-shadow:0 20px 60px rgba(0,0,0,.28)}
+    input,select,textarea{background:#07141c;border:1px solid #1c3344;color:#e8f0f4}
+    .bar{height:8px;border-radius:99px;background:#1c3344;overflow:hidden}
+    .bar>i{display:block;height:100%;background:linear-gradient(90deg,#7dffc3,#c8f542)}
+  </style>
+</head>
+<body class="min-h-screen">
+  <header class="sticky top-0 z-20 border-b border-white/5 bg-[#061018]/80 backdrop-blur-xl">
+    <div class="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
+      <div class="flex items-center gap-3">
+        <div class="grid h-10 w-10 place-items-center rounded-2xl bg-lime text-ink font-display">AL</div>
+        <div>
+          <p class="font-display text-lg leading-none">Athlete Lens</p>
+          <p class="text-[11px] tracking-wide text-slate-400">ML performance framework</p>
+        </div>
+      </div>
+      <nav id="nav" class="hidden md:flex gap-1"></nav>
+      <label class="cursor-pointer rounded-full border border-lime/40 px-3 py-1 text-xs text-lime">
+        Upload CSV <input id="csv" type="file" accept=".csv" hidden />
+      </label>
+    </div>
+    <div id="navm" class="mx-auto flex max-w-7xl gap-2 overflow-auto px-5 pb-3 md:hidden"></div>
+  </header>
+  <main id="app" class="mx-auto max-w-7xl px-5 py-8"></main>
+  <div id="toast" class="fixed bottom-5 right-5 hidden rounded-full bg-lime px-4 py-2 text-sm font-medium text-ink"></div>
+  <script src="/app.js"></script>
+</body>
+</html>
