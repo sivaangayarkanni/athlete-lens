@@ -1,0 +1,4 @@
+name,sport,sex,age,height_cm,weight_kg,years_training,previous_injuries,city,session_date,duration_min,distance_km,sprint_100m_s,vertical_jump_cm,resting_hr,session_hr_avg,rpe,sleep_hours,wellness,sessions_last_7,rest_days_last_7
+Priya N,Athletics,F,18,162,51,4,0,Theni,2026-09-01,70,6.2,13.9,41,64,146,6,7.5,8,4,2
+Arun Kumar,Football,M,20,176,68,5,1,Dindigul,2026-09-02,88,8.1,12.8,49,60,158,8,6.0,5,7,1
+Lakshmi Devi,Kabaddi,F,19,159,54,3,0,Pudukkottai,2026-09-03,65,2.1,14.6,37,70,149,7,7.0,7,5,2
