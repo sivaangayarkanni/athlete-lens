@@ -5,5 +5,9 @@ services:
       - "8000:8000"
     environment:
       APP_ENV: production
-      DATABASE_URL: sqlite:////tmp/athlete_lens.db
+      DATABASE_URL: sqlite:////data/athlete_lens.db
       MODEL_DIR: /tmp/athlete_lens_models
+    volumes:
+      - athlete_lens_data:/data
+volumes:
+  athlete_lens_data:
