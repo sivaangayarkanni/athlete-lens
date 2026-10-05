@@ -1,10 +1,11 @@
+"""Deterministic demo roster: eight Tamil Nadu athletes with four weeks of sessions."""
 from datetime import date, timedelta
 
+import numpy as np
 from sqlalchemy.orm import Session
 
 from . import models
-from .ml_engine import engine_singleton
-
+from .services import score_session
 
 ATHLETES = [
     dict(name="Meenakshi R", sport="Athletics", role="100m / 200m", sex="F", age=19, height_cm=164, weight_kg=52, years_training=5, city="Madurai", academy="SDAT Madurai", previous_injuries=1, notes="District gold 100m."),
@@ -17,66 +18,43 @@ ATHLETES = [
     dict(name="Surya Prakash", sport="Wrestling", role="74kg", sex="M", age=23, height_cm=172, weight_kg=76, years_training=8, city="Erode", academy="SAI Extension", previous_injuries=3, notes="Cut-weight weeks are risky."),
 ]
 
+# Training "story" for the last week per athlete: how hard the final block is (0 = fresh, 1 = camp overload).
+BLOCK_STRESS = [0.2, 0.9, 0.1, 0.5, 0.3, 0.6, 0.0, 1.0]
+ENDURANCE_SPORTS = {"Athletics", "Football", "Hockey", "Kho-Kho"}
+
 
 def seed_if_empty(db: Session) -> None:
-    engine_singleton.load()
     if db.query(models.Athlete).count() > 0:
         return
     today = date.today()
     for i, raw in enumerate(ATHLETES):
+        rng = np.random.default_rng(100 + i)
         a = models.Athlete(**raw)
         db.add(a)
         db.flush()
-        for d in range(10, -1, -2):
-            tired = d in (2, 0)
+        stress = BLOCK_STRESS[i]
+        female = a.sex == "F"
+        # 14 sessions across 27 days (every other day), last week ramps with `stress`.
+        for d in range(26, -1, -2):
+            late = d <= 6
+            s = stress if late else 0.15
             sess = models.TrainingSession(
                 athlete_id=a.id,
                 session_date=today - timedelta(days=d),
-                duration_min=80 if tired else 62,
-                distance_km=7.5 if a.sport in {"Athletics", "Football", "Hockey"} else 2.4,
-                sprint_100m_s=13.1 + (0.6 if a.sex == "F" else 0) + (0.5 if tired else 0),
-                vertical_jump_cm=(40 if a.sex == "F" else 48) - (4 if tired else 0) + i,
-                resting_hr=62 + (8 if tired else 0),
-                session_hr_avg=150 + (12 if tired else 0),
-                rpe=8.2 if tired else 6.1,
-                sleep_hours=5.8 if tired else 7.4,
-                wellness=5 if tired else 8,
-                sessions_last_7=7 if tired else 4,
-                rest_days_last_7=0 if tired else 2,
-                notes="Camp block" if tired else "Quality session",
+                duration_min=round(float(60 + 35 * s + rng.normal(0, 5)), 0),
+                distance_km=round(float((6.5 if a.sport in ENDURANCE_SPORTS else 2.5) + rng.normal(0, 0.6)), 1),
+                sprint_100m_s=round(float((13.7 if female else 12.6) + 0.5 * s + rng.normal(0, 0.12)), 2),
+                vertical_jump_cm=round(float((40 if female else 50) + i * 0.6 - 4 * s + rng.normal(0, 1.2)), 1),
+                resting_hr=round(float(60 + 9 * s + rng.normal(0, 1.5)), 0),
+                session_hr_avg=round(float(146 + 14 * s + rng.normal(0, 3)), 0),
+                rpe=round(float(min(10, 5.8 + 2.6 * s + rng.normal(0, 0.3))), 1),
+                sleep_hours=round(float(7.6 - 1.9 * s + rng.normal(0, 0.25)), 1),
+                wellness=round(float(min(10, 8 - 3.2 * s + rng.normal(0, 0.4))), 1),
+                sessions_last_7=int(round(4 + 3 * s)),
+                rest_days_last_7=int(round(2 - 2 * s)),
+                notes="Camp block" if late and s >= 0.6 else "Quality session",
             )
             db.add(sess)
             db.flush()
-            payload = {
-                "age": a.age,
-                "sex": a.sex,
-                "sport": a.sport,
-                "years_training": a.years_training,
-                "height_cm": a.height_cm,
-                "weight_kg": a.weight_kg,
-                "previous_injuries": a.previous_injuries,
-                "duration_min": sess.duration_min,
-                "distance_km": sess.distance_km,
-                "sprint_100m_s": sess.sprint_100m_s,
-                "vertical_jump_cm": sess.vertical_jump_cm,
-                "resting_hr": sess.resting_hr,
-                "session_hr_avg": sess.session_hr_avg,
-                "rpe": sess.rpe,
-                "sleep_hours": sess.sleep_hours,
-                "wellness": sess.wellness,
-                "sessions_last_7": sess.sessions_last_7,
-                "rest_days_last_7": sess.rest_days_last_7,
-            }
-            pred = engine_singleton.analyze(payload)
-            db.add(
-                models.PredictionLog(
-                    athlete_id=a.id,
-                    session_id=sess.id,
-                    performance_index=pred["performance_index"],
-                    readiness_score=pred["readiness_score"],
-                    injury_risk=pred["injury_risk"],
-                    injury_probability=pred["injury_probability"],
-                    overtraining=int(pred["overtraining"]),
-                )
-            )
+            score_session(db, a, sess)
     db.commit()
