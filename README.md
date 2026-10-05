@@ -4,7 +4,7 @@
 
 > A stopwatch, a tape, and how the session felt is enough.
 
-**Live demo:** _LIVE_URL_ · API docs at `/docs`
+**Live demo:** **https://athlete-lens.vercel.app** (Vercel, demo data resets on cold start) · API docs at `/docs`
 
 ![stack](https://img.shields.io/badge/FastAPI-0.115-009688) ![ml](https://img.shields.io/badge/scikit--learn-1.6-F7931E) ![deploy](https://img.shields.io/badge/deploy-Vercel%20%7C%20Docker-000) ![ci](https://github.com/sivaangayarkanni/athlete-lens/actions/workflows/ci.yml/badge.svg)
 
@@ -102,7 +102,7 @@ docker compose up --build    # http://localhost:8000
 pytest -q
 ```
 
-24 tests cover the API (CRUD, sessions, validation, what-if, CSV ingest, stats, model card, static UI) and the ML engine (feature building, training, artifact staleness). CI runs them on Python 3.12 and 3.13, boots the server for a smoke test, and builds the React shell.
+21 tests cover the API (CRUD, sessions, validation, what-if, CSV ingest, stats, model card, static UI) and the ML engine (feature building, training, artifact staleness). GitHub Actions runs them on every push / PR.
 
 ## API surface
 
