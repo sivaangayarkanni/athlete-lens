@@ -6,8 +6,7 @@ __pycache__/
 venv/
 .env
 .env.local
-*.joblib
-backend/app/artifacts/
+# pre-trained models in backend/app/artifacts ARE committed (needed for serverless)
 .pytest_cache/
 .coverage
 htmlcov/
@@ -27,3 +26,7 @@ npm-debug.log*
 *.db
 *.sqlite3
 backend/athlete_lens.db
+
+# Vercel / builds
+.vercel
+frontend/dist-react/
