@@ -25,9 +25,16 @@ class Athlete(Base):
     city: Mapped[str] = mapped_column(String(80), default="Coimbatore")
     academy: Mapped[str] = mapped_column(String(120), default="District Sports Academy")
     previous_injuries: Mapped[int] = mapped_column(Integer, default=0)
+    injury_history: Mapped[str] = mapped_column(Text, default="")          # comma-separated body regions
+    growth_cm: Mapped[float | None] = mapped_column(Float, nullable=True)   # height gained in the last 6 months
+    nordic_program: Mapped[int] = mapped_column(Integer, default=0)
+    adductor_program: Mapped[int] = mapped_column(Integer, default=0)
     notes: Mapped[str] = mapped_column(Text, default="")
     created_at: Mapped[datetime] = mapped_column(DateTime, default=_now)
 
+    injuries: Mapped[list["InjuryRecord"]] = relationship(
+        back_populates="athlete", cascade="all, delete-orphan", order_by="InjuryRecord.onset_date"
+    )
     sessions: Mapped[list["TrainingSession"]] = relationship(
         back_populates="athlete", cascade="all, delete-orphan", order_by="TrainingSession.session_date"
     )
@@ -42,8 +49,8 @@ class TrainingSession(Base):
     session_date: Mapped[date] = mapped_column(Date, index=True)
     duration_min: Mapped[float] = mapped_column(Float)
     distance_km: Mapped[float] = mapped_column(Float, default=0)
-    sprint_100m_s: Mapped[float] = mapped_column(Float, default=14.5)
-    vertical_jump_cm: Mapped[float] = mapped_column(Float, default=38)
+    sprint_100m_s: Mapped[float | None] = mapped_column(Float, nullable=True)
+    vertical_jump_cm: Mapped[float | None] = mapped_column(Float, nullable=True)
     resting_hr: Mapped[float] = mapped_column(Float, default=68)
     session_hr_avg: Mapped[float] = mapped_column(Float, default=142)
     rpe: Mapped[float] = mapped_column(Float, default=6)
@@ -51,6 +58,8 @@ class TrainingSession(Base):
     wellness: Mapped[float] = mapped_column(Float, default=7)
     sessions_last_7: Mapped[int] = mapped_column(Integer, default=4)
     rest_days_last_7: Mapped[int] = mapped_column(Integer, default=2)
+    session_type: Mapped[str] = mapped_column(String(16), default="training")   # training | match | recovery
+    asymmetry_pct: Mapped[float | None] = mapped_column(Float, nullable=True)  # single-leg hop/jump asymmetry
     notes: Mapped[str] = mapped_column(Text, default="")
     created_at: Mapped[datetime] = mapped_column(DateTime, default=_now)
 
@@ -71,6 +80,23 @@ class PredictionLog(Base):
     injury_risk: Mapped[str] = mapped_column(String(24))
     injury_probability: Mapped[float] = mapped_column(Float)
     overtraining: Mapped[int] = mapped_column(Integer, default=0)
+    region_risks: Mapped[str | None] = mapped_column(Text, nullable=True)   # JSON {region: probability}
+    top_region: Mapped[str | None] = mapped_column(String(24), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=_now)
 
     session: Mapped[TrainingSession | None] = relationship(back_populates="prediction")
+
+
+class InjuryRecord(Base):
+    __tablename__ = "injuries"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    athlete_id: Mapped[int] = mapped_column(ForeignKey("athletes.id", ondelete="CASCADE"), index=True)
+    region: Mapped[str] = mapped_column(String(24))
+    injury_type: Mapped[str] = mapped_column(String(24))
+    onset_date: Mapped[date] = mapped_column(Date, index=True)
+    return_date: Mapped[date | None] = mapped_column(Date, nullable=True)
+    notes: Mapped[str] = mapped_column(Text, default="")
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=_now)
+
+    athlete: Mapped[Athlete] = relationship(back_populates="injuries")
