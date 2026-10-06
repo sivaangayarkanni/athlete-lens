@@ -30,3 +30,4 @@ backend/athlete_lens.db
 # Vercel / builds
 .vercel
 frontend/dist-react/
+data/external/

@@ -19,12 +19,13 @@ def test_enrich_and_vectorize():
 def test_training_from_scratch_writes_artifacts(tmp_path):
     model = AthleteLensModel(model_dir=tmp_path)
     meta = model.train(n=400)
-    assert (tmp_path / "injury_rf.joblib").exists()
+    assert (tmp_path / "performance_gbr.joblib").exists()
+    assert not (tmp_path / "injury_rf.joblib").exists()  # injury risk moved to backend.app.injury
     assert meta["train_rows"] == 320 and meta["test_rows"] == 80
     reloaded = AthleteLensModel(model_dir=tmp_path)
     assert reloaded._try_load(tmp_path)
     x = np.zeros((1, len(FEATURE_NAMES)))
-    assert np.allclose(model.clf.predict_proba(x), reloaded.clf.predict_proba(x))
+    assert np.allclose(model.reg.predict(x), reloaded.reg.predict(x))
 
 
 def test_stale_artifacts_are_ignored(tmp_path):

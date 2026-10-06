@@ -3,10 +3,24 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
+from .injury.catalog import INJURY_TYPES, REGIONS
 from .ml_engine import SPORTS
 
 Sport = Literal["Athletics", "Kabaddi", "Kho-Kho", "Football", "Hockey", "Volleyball", "Badminton", "Wrestling"]
 Sex = Literal["F", "M", "Other"]
+Region = Literal["hamstring", "quadriceps", "groin", "calf_achilles", "knee", "ankle", "foot", "hip",
+                 "lower_back", "shoulder", "elbow_wrist", "head_neck"]
+InjuryType = Literal["muscle_strain", "ligament_sprain", "tendinopathy", "overuse_stress", "contusion", "concussion"]
+SessionType = Literal["training", "match", "recovery"]
+assert list(Region.__args__) == REGIONS and list(InjuryType.__args__) == INJURY_TYPES
+
+
+def _split_regions(v):
+    if v is None:
+        return []
+    if isinstance(v, str):
+        return [x.strip() for x in v.split(",") if x.strip()]
+    return v
 assert list(Sport.__args__) == SPORTS  # keep schema + model in sync
 
 
@@ -26,8 +40,14 @@ class AthleteBase(BaseModel):
     city: str = Field(default="Coimbatore", max_length=80)
     academy: str = Field(default="District Sports Academy", max_length=120)
     previous_injuries: int = Field(ge=0, le=20, default=0)
+    injury_history: list[Region] = Field(default_factory=list, max_length=20,
+                                         description="Body regions injured before tracking started")
+    growth_cm: float | None = Field(default=None, ge=0, le=20, description="Height gained in the last 6 months (youth)")
+    nordic_program: bool = False
+    adductor_program: bool = False
     notes: str = Field(default="", max_length=1000)
 
+    _split = field_validator("injury_history", mode="before")(_split_regions)
     _strip_strings = field_validator("name", "role", "city", "academy", "notes", mode="before")(_strip)
 
 
@@ -47,7 +67,13 @@ class AthleteUpdate(BaseModel):
     city: str | None = Field(default=None, max_length=80)
     academy: str | None = Field(default=None, max_length=120)
     previous_injuries: int | None = Field(default=None, ge=0, le=20)
+    injury_history: list[Region] | None = Field(default=None, max_length=20)
+    growth_cm: float | None = Field(default=None, ge=0, le=20)
+    nordic_program: bool | None = None
+    adductor_program: bool | None = None
     notes: str | None = Field(default=None, max_length=1000)
+
+    _split = field_validator("injury_history", mode="before")(_split_regions)
 
 
 class AthleteOut(AthleteBase):
@@ -58,6 +84,8 @@ class AthleteOut(AthleteBase):
     latest_readiness: float | None = None
     latest_performance: float | None = None
     latest_risk: str | None = None
+    latest_injury_probability: float | None = None
+    top_region: str | None = None
     last_session: date | None = None
     session_count: int = 0
 
@@ -65,8 +93,8 @@ class AthleteOut(AthleteBase):
 class SessionMetrics(BaseModel):
     duration_min: float = Field(ge=10, le=300)
     distance_km: float = Field(ge=0, le=80, default=0)
-    sprint_100m_s: float = Field(ge=9.5, le=25, default=14.5)
-    vertical_jump_cm: float = Field(ge=15, le=90, default=38)
+    sprint_100m_s: float | None = Field(ge=9.5, le=25, default=None, description="100 m time if tested today")
+    vertical_jump_cm: float | None = Field(ge=15, le=90, default=None, description="Vertical jump if tested today")
     resting_hr: float = Field(ge=38, le=110, default=68)
     session_hr_avg: float = Field(ge=80, le=210, default=142)
     rpe: float = Field(ge=1, le=10, default=6)
@@ -74,6 +102,8 @@ class SessionMetrics(BaseModel):
     wellness: float = Field(ge=1, le=10, default=7)
     sessions_last_7: int = Field(ge=0, le=14, default=4)
     rest_days_last_7: int = Field(ge=0, le=7, default=2)
+    session_type: SessionType = "training"
+    asymmetry_pct: float | None = Field(default=None, ge=0, le=60, description="Single-leg hop/jump asymmetry %")
 
 
 class SessionCreate(SessionMetrics):
@@ -122,6 +152,20 @@ class AnalyzePayload(BaseModel):
     wellness: float = Field(default=7, ge=1, le=10)
     sessions_last_7: int = Field(default=5, ge=0, le=14)
     rest_days_last_7: int = Field(default=2, ge=0, le=7)
+    # extra context for the injury model (guest mode builds a synthetic 4-week history from these)
+    chronic_sessions_per_week: int | None = Field(default=None, ge=0, le=14, description="Typical sessions/week over the previous 3 weeks")
+    chronic_duration_min: float | None = Field(default=None, ge=10, le=300, description="Typical session length over the previous 3 weeks")
+    matches_last_7: int = Field(default=0, ge=0, le=7)
+    asymmetry_pct: float | None = Field(default=None, ge=0, le=60)
+    growth_cm: float | None = Field(default=None, ge=0, le=20)
+    nordic_program: bool = False
+    adductor_program: bool = False
+    injury_history: list[Region] = Field(default_factory=list, max_length=20)
+    # what-if transforms applied to the last 7 days (athlete mode) or the synthetic history (guest mode)
+    load_change_pct: float = Field(default=0, ge=-80, le=100)
+    extra_rest_days: int = Field(default=0, ge=0, le=4)
+
+    _split = field_validator("injury_history", mode="before")(_split_regions)
 
 
 class Recommendation(BaseModel):
@@ -139,6 +183,37 @@ class PlanDay(BaseModel):
     detail: str
 
 
+class RegionRisk(BaseModel):
+    region: Region
+    label: str
+    probability: float
+    relative_risk: float
+    level: Literal["low", "typical", "elevated", "high"]
+    sport_average: float
+    likely_type: InjuryType | None = None
+    likely_type_label: str | None = None
+    type_probs: dict[str, float] = {}
+
+
+class OverallRisk(BaseModel):
+    probability: float
+    band: Literal["low", "moderate", "high"]
+    relative_risk: float
+    sport_average: float
+    horizon_days: int
+
+
+class InjuryRiskSummary(BaseModel):
+    as_of: date | None = None
+    overall: OverallRisk
+    regions: list[RegionRisk]
+    top_regions: list[Region]
+    type_mix: list[dict]
+    drivers: dict | None = None
+    load: dict | None = None
+    real_data: dict | None = None
+
+
 class AnalysisResult(BaseModel):
     performance_index: float
     readiness_score: float
@@ -154,6 +229,7 @@ class AnalysisResult(BaseModel):
     recommendations: list[Recommendation]
     plan_72h: list[PlanDay]
     feature_importance: list[dict]
+    injury: InjuryRiskSummary | None = None
 
 
 class SessionLogged(BaseModel):
@@ -172,8 +248,10 @@ class TrendPoint(BaseModel):
     performance_index: float | None
     injury_probability: float | None
     injury_risk: str | None
-    sprint_100m_s: float
-    vertical_jump_cm: float
+    top_region: str | None = None
+    session_type: str | None = None
+    sprint_100m_s: float | None
+    vertical_jump_cm: float | None
     sleep_hours: float
     wellness: float
 
@@ -202,3 +280,30 @@ class UploadResult(BaseModel):
     athletes_created: int
     sessions_created: int
     errors: list[dict]
+
+
+class InjuryCreate(BaseModel):
+    region: Region
+    injury_type: InjuryType
+    onset_date: date
+    return_date: date | None = None
+    notes: str = Field(default="", max_length=1000)
+
+    @field_validator("onset_date")
+    @classmethod
+    def onset_not_future(cls, v: date) -> date:
+        if v > date.today():
+            raise ValueError("onset_date cannot be in the future")
+        return v
+
+
+class InjuryOut(InjuryCreate):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    athlete_id: int
+
+    @field_validator("onset_date")
+    @classmethod
+    def onset_not_future(cls, v: date) -> date:
+        return v

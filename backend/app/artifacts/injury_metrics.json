@@ -1,0 +1,1744 @@
+{
+ "trained_at": "2026-10-06T06:00:41Z",
+ "sklearn_version": "1.6.1",
+ "train_seconds": 258.8,
+ "seed": 7,
+ "features": [
+  "age",
+  "female",
+  "bmi",
+  "years_training",
+  "growth_cm",
+  "youth_growth",
+  "nordic",
+  "adductor",
+  "ewma_acute",
+  "ewma_chronic",
+  "acwr_ewma",
+  "acute_7",
+  "chronic_28w",
+  "acwr_ra",
+  "load_wow",
+  "monotony_7",
+  "strain_7",
+  "sessions_7",
+  "rest_days_7",
+  "matches_7",
+  "hi_rpe_7",
+  "distance_7",
+  "distance_wow",
+  "days_since_rest",
+  "sleep_mean_7",
+  "sleep_debt_7",
+  "sleep_last",
+  "wellness_mean_3",
+  "wellness_trend",
+  "sprint_delta_pct",
+  "jump_delta_pct",
+  "rhr_delta",
+  "asymmetry_pct",
+  "prev_any",
+  "days_since_injury",
+  "days_since_return",
+  "prev_hamstring",
+  "prev_quadriceps",
+  "prev_groin",
+  "prev_calf_achilles",
+  "prev_knee",
+  "prev_ankle",
+  "prev_foot",
+  "prev_hip",
+  "prev_lower_back",
+  "prev_shoulder",
+  "prev_elbow_wrist",
+  "prev_head_neck",
+  "sport_Athletics",
+  "sport_Kabaddi",
+  "sport_Kho-Kho",
+  "sport_Football",
+  "sport_Hockey",
+  "sport_Volleyball",
+  "sport_Badminton",
+  "sport_Wrestling",
+  "sport_prior_hamstring",
+  "sport_prior_quadriceps",
+  "sport_prior_groin",
+  "sport_prior_calf_achilles",
+  "sport_prior_knee",
+  "sport_prior_ankle",
+  "sport_prior_foot",
+  "sport_prior_hip",
+  "sport_prior_lower_back",
+  "sport_prior_shoulder",
+  "sport_prior_elbow_wrist",
+  "sport_prior_head_neck"
+ ],
+ "simulated": {
+  "n_athletes": 3000,
+  "season_days": 168,
+  "rows": 200686,
+  "injuries": 4154,
+  "injuries_per_athlete_season": 1.38,
+  "horizon_days": 7,
+  "grouped_cv": {
+   "any": {
+    "model": {
+     "prevalence": 0.06365,
+     "n_pos": 12773,
+     "n": 200686,
+     "roc_auc": 0.642,
+     "pr_auc": 0.1214,
+     "brier": 0.05828
+    },
+    "baseline_prevalence": {
+     "roc_auc": 0.5,
+     "pr_auc": 0.06365,
+     "brier": 0.0596
+    },
+    "baseline_sport_rate": {
+     "prevalence": 0.06365,
+     "n_pos": 12773,
+     "n": 200686,
+     "roc_auc": 0.52,
+     "pr_auc": 0.0674,
+     "brier": 0.05959
+    },
+    "calibration": {
+     "bins": [
+      {
+       "pred": 0.0306,
+       "obs": 0.0302,
+       "n": 20069
+      },
+      {
+       "pred": 0.0371,
+       "obs": 0.0391,
+       "n": 20068
+      },
+      {
+       "pred": 0.0409,
+       "obs": 0.0427,
+       "n": 20069
+      },
+      {
+       "pred": 0.0444,
+       "obs": 0.0451,
+       "n": 20068
+      },
+      {
+       "pred": 0.0484,
+       "obs": 0.0498,
+       "n": 20068
+      },
+      {
+       "pred": 0.0534,
+       "obs": 0.0542,
+       "n": 20070
+      },
+      {
+       "pred": 0.0599,
+       "obs": 0.0634,
+       "n": 20068
+      },
+      {
+       "pred": 0.0707,
+       "obs": 0.0705,
+       "n": 20068
+      },
+      {
+       "pred": 0.0933,
+       "obs": 0.0878,
+       "n": 20069
+      },
+      {
+       "pred": 0.1611,
+       "obs": 0.1537,
+       "n": 20069
+      }
+     ],
+     "ece": 0.0024
+    },
+    "baseline_acwr_logistic": {
+     "prevalence": 0.06365,
+     "n_pos": 12773,
+     "n": 200686,
+     "roc_auc": 0.569,
+     "pr_auc": 0.1001,
+     "brier": 0.05901
+    },
+    "baseline_logistic_all_features": {
+     "prevalence": 0.06365,
+     "n_pos": 12773,
+     "n": 200686,
+     "roc_auc": 0.638,
+     "pr_auc": 0.1215,
+     "brier": 0.05831
+    },
+    "oracle_true_hazard": {
+     "prevalence": 0.06365,
+     "n_pos": 12773,
+     "n": 200686,
+     "roc_auc": 0.707,
+     "pr_auc": 0.2079,
+     "brier": 0.0556
+    }
+   },
+   "hamstring": {
+    "model": {
+     "prevalence": 0.00658,
+     "n_pos": 1320,
+     "n": 200686,
+     "roc_auc": 0.791,
+     "pr_auc": 0.0377,
+     "brier": 0.00642
+    },
+    "baseline_prevalence": {
+     "roc_auc": 0.5,
+     "pr_auc": 0.00658,
+     "brier": 0.00653
+    },
+    "baseline_sport_rate": {
+     "prevalence": 0.00658,
+     "n_pos": 1320,
+     "n": 200686,
+     "roc_auc": 0.697,
+     "pr_auc": 0.0124,
+     "brier": 0.00651
+    },
+    "calibration": {
+     "bins": [
+      {
+       "pred": 0.0011,
+       "obs": 0.0012,
+       "n": 20069
+      },
+      {
+       "pred": 0.0015,
+       "obs": 0.0005,
+       "n": 20068
+      },
+      {
+       "pred": 0.002,
+       "obs": 0.0014,
+       "n": 20069
+      },
+      {
+       "pred": 0.0025,
+       "obs": 0.0025,
+       "n": 20068
+      },
+      {
+       "pred": 0.003,
+       "obs": 0.0026,
+       "n": 20069
+      },
+      {
+       "pred": 0.0038,
+       "obs": 0.0046,
+       "n": 20069
+      },
+      {
+       "pred": 0.0048,
+       "obs": 0.0063,
+       "n": 20068
+      },
+      {
+       "pred": 0.0062,
+       "obs": 0.0058,
+       "n": 20068
+      },
+      {
+       "pred": 0.0089,
+       "obs": 0.0098,
+       "n": 20069
+      },
+      {
+       "pred": 0.0277,
+       "obs": 0.031,
+       "n": 20069
+      }
+     ],
+     "ece": 0.0009
+    }
+   },
+   "quadriceps": {
+    "model": {
+     "prevalence": 0.00342,
+     "n_pos": 687,
+     "n": 200686,
+     "roc_auc": 0.598,
+     "pr_auc": 0.005,
+     "brier": 0.00341
+    },
+    "baseline_prevalence": {
+     "roc_auc": 0.5,
+     "pr_auc": 0.00342,
+     "brier": 0.00341
+    },
+    "baseline_sport_rate": {
+     "prevalence": 0.00342,
+     "n_pos": 687,
+     "n": 200686,
+     "roc_auc": 0.567,
+     "pr_auc": 0.0043,
+     "brier": 0.00341
+    },
+    "calibration": {
+     "bins": [
+      {
+       "pred": 0.0014,
+       "obs": 0.002,
+       "n": 20069
+      },
+      {
+       "pred": 0.0018,
+       "obs": 0.002,
+       "n": 20068
+      },
+      {
+       "pred": 0.0021,
+       "obs": 0.0026,
+       "n": 20069
+      },
+      {
+       "pred": 0.0024,
+       "obs": 0.0026,
+       "n": 20068
+      },
+      {
+       "pred": 0.0027,
+       "obs": 0.0033,
+       "n": 20069
+      },
+      {
+       "pred": 0.003,
+       "obs": 0.0028,
+       "n": 20068
+      },
+      {
+       "pred": 0.0033,
+       "obs": 0.0033,
+       "n": 20069
+      },
+      {
+       "pred": 0.0036,
+       "obs": 0.0044,
+       "n": 20068
+      },
+      {
+       "pred": 0.0043,
+       "obs": 0.0055,
+       "n": 20069
+      },
+      {
+       "pred": 0.0075,
+       "obs": 0.0055,
+       "n": 20069
+      }
+     ],
+     "ece": 0.0006
+    }
+   },
+   "groin": {
+    "model": {
+     "prevalence": 0.00285,
+     "n_pos": 572,
+     "n": 200686,
+     "roc_auc": 0.681,
+     "pr_auc": 0.0082,
+     "brier": 0.00284
+    },
+    "baseline_prevalence": {
+     "roc_auc": 0.5,
+     "pr_auc": 0.00285,
+     "brier": 0.00284
+    },
+    "baseline_sport_rate": {
+     "prevalence": 0.00285,
+     "n_pos": 572,
+     "n": 200686,
+     "roc_auc": 0.644,
+     "pr_auc": 0.0049,
+     "brier": 0.00284
+    },
+    "calibration": {
+     "bins": [
+      {
+       "pred": 0.0008,
+       "obs": 0.0012,
+       "n": 20069
+      },
+      {
+       "pred": 0.0011,
+       "obs": 0.0013,
+       "n": 20068
+      },
+      {
+       "pred": 0.0014,
+       "obs": 0.0016,
+       "n": 20069
+      },
+      {
+       "pred": 0.0018,
+       "obs": 0.0018,
+       "n": 20068
+      },
+      {
+       "pred": 0.0021,
+       "obs": 0.0021,
+       "n": 20069
+      },
+      {
+       "pred": 0.0025,
+       "obs": 0.0022,
+       "n": 20068
+      },
+      {
+       "pred": 0.003,
+       "obs": 0.0018,
+       "n": 20068
+      },
+      {
+       "pred": 0.0038,
+       "obs": 0.0029,
+       "n": 20069
+      },
+      {
+       "pred": 0.0051,
+       "obs": 0.0036,
+       "n": 20069
+      },
+      {
+       "pred": 0.011,
+       "obs": 0.0097,
+       "n": 20069
+      }
+     ],
+     "ece": 0.0006
+    }
+   },
+   "calf_achilles": {
+    "model": {
+     "prevalence": 0.00438,
+     "n_pos": 880,
+     "n": 200686,
+     "roc_auc": 0.642,
+     "pr_auc": 0.01,
+     "brier": 0.00436
+    },
+    "baseline_prevalence": {
+     "roc_auc": 0.5,
+     "pr_auc": 0.00438,
+     "brier": 0.00437
+    },
+    "baseline_sport_rate": {
+     "prevalence": 0.00438,
+     "n_pos": 880,
+     "n": 200686,
+     "roc_auc": 0.583,
+     "pr_auc": 0.0051,
+     "brier": 0.00436
+    },
+    "calibration": {
+     "bins": [
+      {
+       "pred": 0.0015,
+       "obs": 0.0018,
+       "n": 20069
+      },
+      {
+       "pred": 0.0021,
+       "obs": 0.0028,
+       "n": 20068
+      },
+      {
+       "pred": 0.0025,
+       "obs": 0.0026,
+       "n": 20069
+      },
+      {
+       "pred": 0.0029,
+       "obs": 0.0034,
+       "n": 20067
+      },
+      {
+       "pred": 0.0033,
+       "obs": 0.0038,
+       "n": 20070
+      },
+      {
+       "pred": 0.0039,
+       "obs": 0.0036,
+       "n": 20068
+      },
+      {
+       "pred": 0.0046,
+       "obs": 0.0035,
+       "n": 20069
+      },
+      {
+       "pred": 0.0056,
+       "obs": 0.0043,
+       "n": 20068
+      },
+      {
+       "pred": 0.0075,
+       "obs": 0.0064,
+       "n": 20069
+      },
+      {
+       "pred": 0.0145,
+       "obs": 0.0115,
+       "n": 20069
+      }
+     ],
+     "ece": 0.0009
+    }
+   },
+   "knee": {
+    "model": {
+     "prevalence": 0.01042,
+     "n_pos": 2091,
+     "n": 200686,
+     "roc_auc": 0.667,
+     "pr_auc": 0.0261,
+     "brier": 0.01025
+    },
+    "baseline_prevalence": {
+     "roc_auc": 0.5,
+     "pr_auc": 0.01042,
+     "brier": 0.01031
+    },
+    "baseline_sport_rate": {
+     "prevalence": 0.01042,
+     "n_pos": 2091,
+     "n": 200686,
+     "roc_auc": 0.512,
+     "pr_auc": 0.0103,
+     "brier": 0.01031
+    },
+    "calibration": {
+     "bins": [
+      {
+       "pred": 0.0038,
+       "obs": 0.0056,
+       "n": 20069
+      },
+      {
+       "pred": 0.0047,
+       "obs": 0.0052,
+       "n": 20068
+      },
+      {
+       "pred": 0.0054,
+       "obs": 0.0055,
+       "n": 20069
+      },
+      {
+       "pred": 0.006,
+       "obs": 0.0064,
+       "n": 20068
+      },
+      {
+       "pred": 0.0067,
+       "obs": 0.007,
+       "n": 20069
+      },
+      {
+       "pred": 0.0077,
+       "obs": 0.0082,
+       "n": 20069
+      },
+      {
+       "pred": 0.0091,
+       "obs": 0.0094,
+       "n": 20068
+      },
+      {
+       "pred": 0.0112,
+       "obs": 0.0096,
+       "n": 20068
+      },
+      {
+       "pred": 0.0151,
+       "obs": 0.016,
+       "n": 20069
+      },
+      {
+       "pred": 0.0331,
+       "obs": 0.0311,
+       "n": 20069
+      }
+     ],
+     "ece": 0.0009
+    }
+   },
+   "ankle": {
+    "model": {
+     "prevalence": 0.00983,
+     "n_pos": 1972,
+     "n": 200686,
+     "roc_auc": 0.656,
+     "pr_auc": 0.0206,
+     "brier": 0.00969
+    },
+    "baseline_prevalence": {
+     "roc_auc": 0.5,
+     "pr_auc": 0.00983,
+     "brier": 0.00973
+    },
+    "baseline_sport_rate": {
+     "prevalence": 0.00983,
+     "n_pos": 1972,
+     "n": 200686,
+     "roc_auc": 0.622,
+     "pr_auc": 0.014,
+     "brier": 0.00971
+    },
+    "calibration": {
+     "bins": [
+      {
+       "pred": 0.0031,
+       "obs": 0.0027,
+       "n": 20069
+      },
+      {
+       "pred": 0.0044,
+       "obs": 0.0053,
+       "n": 20068
+      },
+      {
+       "pred": 0.0054,
+       "obs": 0.0064,
+       "n": 20069
+      },
+      {
+       "pred": 0.0063,
+       "obs": 0.0062,
+       "n": 20068
+      },
+      {
+       "pred": 0.0072,
+       "obs": 0.0077,
+       "n": 20069
+      },
+      {
+       "pred": 0.0082,
+       "obs": 0.0096,
+       "n": 20069
+      },
+      {
+       "pred": 0.0095,
+       "obs": 0.01,
+       "n": 20068
+      },
+      {
+       "pred": 0.0113,
+       "obs": 0.0116,
+       "n": 20068
+      },
+      {
+       "pred": 0.0146,
+       "obs": 0.0145,
+       "n": 20069
+      },
+      {
+       "pred": 0.0269,
+       "obs": 0.0241,
+       "n": 20069
+      }
+     ],
+     "ece": 0.0008
+    }
+   },
+   "foot": {
+    "model": {
+     "prevalence": 0.00413,
+     "n_pos": 828,
+     "n": 200686,
+     "roc_auc": 0.669,
+     "pr_auc": 0.0102,
+     "brier": 0.0041
+    },
+    "baseline_prevalence": {
+     "roc_auc": 0.5,
+     "pr_auc": 0.00413,
+     "brier": 0.00411
+    },
+    "baseline_sport_rate": {
+     "prevalence": 0.00413,
+     "n_pos": 828,
+     "n": 200686,
+     "roc_auc": 0.633,
+     "pr_auc": 0.0058,
+     "brier": 0.0041
+    },
+    "calibration": {
+     "bins": [
+      {
+       "pred": 0.001,
+       "obs": 0.0004,
+       "n": 20069
+      },
+      {
+       "pred": 0.0019,
+       "obs": 0.0015,
+       "n": 20068
+      },
+      {
+       "pred": 0.0025,
+       "obs": 0.0033,
+       "n": 20068
+      },
+      {
+       "pred": 0.003,
+       "obs": 0.0027,
+       "n": 20069
+      },
+      {
+       "pred": 0.0034,
+       "obs": 0.0036,
+       "n": 20069
+      },
+      {
+       "pred": 0.0039,
+       "obs": 0.0036,
+       "n": 20069
+      },
+      {
+       "pred": 0.0045,
+       "obs": 0.0048,
+       "n": 20068
+      },
+      {
+       "pred": 0.0054,
+       "obs": 0.0047,
+       "n": 20068
+      },
+      {
+       "pred": 0.0068,
+       "obs": 0.0057,
+       "n": 20069
+      },
+      {
+       "pred": 0.0127,
+       "obs": 0.0108,
+       "n": 20069
+      }
+     ],
+     "ece": 0.0006
+    }
+   },
+   "hip": {
+    "model": {
+     "prevalence": 0.00237,
+     "n_pos": 476,
+     "n": 200686,
+     "roc_auc": 0.58,
+     "pr_auc": 0.0032,
+     "brier": 0.00237
+    },
+    "baseline_prevalence": {
+     "roc_auc": 0.5,
+     "pr_auc": 0.00237,
+     "brier": 0.00237
+    },
+    "baseline_sport_rate": {
+     "prevalence": 0.00237,
+     "n_pos": 476,
+     "n": 200686,
+     "roc_auc": 0.585,
+     "pr_auc": 0.003,
+     "brier": 0.00237
+    },
+    "calibration": {
+     "bins": [
+      {
+       "pred": 0.0007,
+       "obs": 0.0013,
+       "n": 20069
+      },
+      {
+       "pred": 0.0011,
+       "obs": 0.0015,
+       "n": 20068
+      },
+      {
+       "pred": 0.0015,
+       "obs": 0.0021,
+       "n": 20069
+      },
+      {
+       "pred": 0.002,
+       "obs": 0.0023,
+       "n": 20068
+      },
+      {
+       "pred": 0.0024,
+       "obs": 0.0023,
+       "n": 20069
+      },
+      {
+       "pred": 0.0028,
+       "obs": 0.0022,
+       "n": 20068
+      },
+      {
+       "pred": 0.0031,
+       "obs": 0.0018,
+       "n": 20069
+      },
+      {
+       "pred": 0.0035,
+       "obs": 0.0031,
+       "n": 20068
+      },
+      {
+       "pred": 0.004,
+       "obs": 0.0029,
+       "n": 20069
+      },
+      {
+       "pred": 0.006,
+       "obs": 0.0041,
+       "n": 20069
+      }
+     ],
+     "ece": 0.0007
+    }
+   },
+   "lower_back": {
+    "model": {
+     "prevalence": 0.00497,
+     "n_pos": 997,
+     "n": 200686,
+     "roc_auc": 0.62,
+     "pr_auc": 0.0088,
+     "brier": 0.00494
+    },
+    "baseline_prevalence": {
+     "roc_auc": 0.5,
+     "pr_auc": 0.00497,
+     "brier": 0.00494
+    },
+    "baseline_sport_rate": {
+     "prevalence": 0.00497,
+     "n_pos": 997,
+     "n": 200686,
+     "roc_auc": 0.555,
+     "pr_auc": 0.0059,
+     "brier": 0.00494
+    },
+    "calibration": {
+     "bins": [
+      {
+       "pred": 0.0019,
+       "obs": 0.0035,
+       "n": 20069
+      },
+      {
+       "pred": 0.0027,
+       "obs": 0.0034,
+       "n": 20068
+      },
+      {
+       "pred": 0.0032,
+       "obs": 0.0034,
+       "n": 20069
+      },
+      {
+       "pred": 0.0036,
+       "obs": 0.003,
+       "n": 20068
+      },
+      {
+       "pred": 0.0041,
+       "obs": 0.0031,
+       "n": 20069
+      },
+      {
+       "pred": 0.0046,
+       "obs": 0.0037,
+       "n": 20068
+      },
+      {
+       "pred": 0.0052,
+       "obs": 0.0054,
+       "n": 20069
+      },
+      {
+       "pred": 0.0059,
+       "obs": 0.0048,
+       "n": 20068
+      },
+      {
+       "pred": 0.0073,
+       "obs": 0.0074,
+       "n": 20069
+      },
+      {
+       "pred": 0.0123,
+       "obs": 0.0119,
+       "n": 20069
+      }
+     ],
+     "ece": 0.0007
+    }
+   },
+   "shoulder": {
+    "model": {
+     "prevalence": 0.00617,
+     "n_pos": 1238,
+     "n": 200686,
+     "roc_auc": 0.769,
+     "pr_auc": 0.0243,
+     "brier": 0.00608
+    },
+    "baseline_prevalence": {
+     "roc_auc": 0.5,
+     "pr_auc": 0.00617,
+     "brier": 0.00613
+    },
+    "baseline_sport_rate": {
+     "prevalence": 0.00617,
+     "n_pos": 1238,
+     "n": 200686,
+     "roc_auc": 0.721,
+     "pr_auc": 0.0119,
+     "brier": 0.0061
+    },
+    "calibration": {
+     "bins": [
+      {
+       "pred": 0.0004,
+       "obs": 0.0011,
+       "n": 20069
+      },
+      {
+       "pred": 0.0008,
+       "obs": 0.0012,
+       "n": 20066
+      },
+      {
+       "pred": 0.0012,
+       "obs": 0.0012,
+       "n": 20071
+      },
+      {
+       "pred": 0.0017,
+       "obs": 0.0019,
+       "n": 20066
+      },
+      {
+       "pred": 0.0024,
+       "obs": 0.0021,
+       "n": 20071
+      },
+      {
+       "pred": 0.0037,
+       "obs": 0.0037,
+       "n": 20067
+      },
+      {
+       "pred": 0.0054,
+       "obs": 0.007,
+       "n": 20070
+      },
+      {
+       "pred": 0.0076,
+       "obs": 0.0087,
+       "n": 20068
+      },
+      {
+       "pred": 0.0113,
+       "obs": 0.0122,
+       "n": 20067
+      },
+      {
+       "pred": 0.0264,
+       "obs": 0.0225,
+       "n": 20071
+      }
+     ],
+     "ece": 0.0009
+    }
+   },
+   "elbow_wrist": {
+    "model": {
+     "prevalence": 0.00421,
+     "n_pos": 845,
+     "n": 200686,
+     "roc_auc": 0.6,
+     "pr_auc": 0.0061,
+     "brier": 0.00419
+    },
+    "baseline_prevalence": {
+     "roc_auc": 0.5,
+     "pr_auc": 0.00421,
+     "brier": 0.00419
+    },
+    "baseline_sport_rate": {
+     "prevalence": 0.00421,
+     "n_pos": 845,
+     "n": 200686,
+     "roc_auc": 0.604,
+     "pr_auc": 0.0054,
+     "brier": 0.00419
+    },
+    "calibration": {
+     "bins": [
+      {
+       "pred": 0.0016,
+       "obs": 0.002,
+       "n": 20069
+      },
+      {
+       "pred": 0.0024,
+       "obs": 0.0032,
+       "n": 20068
+      },
+      {
+       "pred": 0.0029,
+       "obs": 0.0031,
+       "n": 20069
+      },
+      {
+       "pred": 0.0033,
+       "obs": 0.0033,
+       "n": 20068
+      },
+      {
+       "pred": 0.0038,
+       "obs": 0.0033,
+       "n": 20069
+      },
+      {
+       "pred": 0.0043,
+       "obs": 0.0044,
+       "n": 20069
+      },
+      {
+       "pred": 0.0048,
+       "obs": 0.0039,
+       "n": 20068
+      },
+      {
+       "pred": 0.0055,
+       "obs": 0.0044,
+       "n": 20068
+      },
+      {
+       "pred": 0.0065,
+       "obs": 0.0074,
+       "n": 20069
+      },
+      {
+       "pred": 0.0093,
+       "obs": 0.007,
+       "n": 20069
+      }
+     ],
+     "ece": 0.0007
+    }
+   },
+   "head_neck": {
+    "model": {
+     "prevalence": 0.00435,
+     "n_pos": 872,
+     "n": 200686,
+     "roc_auc": 0.715,
+     "pr_auc": 0.0088,
+     "brier": 0.00432
+    },
+    "baseline_prevalence": {
+     "roc_auc": 0.5,
+     "pr_auc": 0.00435,
+     "brier": 0.00433
+    },
+    "baseline_sport_rate": {
+     "prevalence": 0.00435,
+     "n_pos": 872,
+     "n": 200686,
+     "roc_auc": 0.716,
+     "pr_auc": 0.0083,
+     "brier": 0.00431
+    },
+    "calibration": {
+     "bins": [
+      {
+       "pred": 0.0005,
+       "obs": 0.0005,
+       "n": 20068
+      },
+      {
+       "pred": 0.0009,
+       "obs": 0.001,
+       "n": 20069
+      },
+      {
+       "pred": 0.0012,
+       "obs": 0.0013,
+       "n": 20069
+      },
+      {
+       "pred": 0.0016,
+       "obs": 0.0021,
+       "n": 20068
+      },
+      {
+       "pred": 0.0022,
+       "obs": 0.0027,
+       "n": 20069
+      },
+      {
+       "pred": 0.0031,
+       "obs": 0.0026,
+       "n": 20069
+      },
+      {
+       "pred": 0.0043,
+       "obs": 0.006,
+       "n": 20068
+      },
+      {
+       "pred": 0.0058,
+       "obs": 0.0089,
+       "n": 20068
+      },
+      {
+       "pred": 0.008,
+       "obs": 0.0086,
+       "n": 20069
+      },
+      {
+       "pred": 0.0134,
+       "obs": 0.0097,
+       "n": 20069
+      }
+     ],
+     "ece": 0.0011
+    }
+   }
+  },
+  "top_k_region": {
+   "top1": {
+    "model": 0.226,
+    "sport_prior": 0.215,
+    "global_prior": 0.164
+   },
+   "top3": {
+    "model": 0.499,
+    "sport_prior": 0.509,
+    "global_prior": 0.421
+   }
+  },
+  "temporal_unseen_athletes": {
+   "any": {
+    "model": {
+     "prevalence": 0.0712,
+     "n_pos": 729,
+     "n": 10239,
+     "roc_auc": 0.676,
+     "pr_auc": 0.1569,
+     "brier": 0.06369
+    },
+    "baseline_sport_rate": {
+     "prevalence": 0.0712,
+     "n_pos": 729,
+     "n": 10239,
+     "roc_auc": 0.512,
+     "pr_auc": 0.0734,
+     "brier": 0.06621
+    }
+   },
+   "hamstring": {
+    "model": {
+     "prevalence": 0.00889,
+     "n_pos": 91,
+     "n": 10239,
+     "roc_auc": 0.722,
+     "pr_auc": 0.0451,
+     "brier": 0.00866
+    },
+    "baseline_sport_rate": {
+     "prevalence": 0.00889,
+     "n_pos": 91,
+     "n": 10239,
+     "roc_auc": 0.651,
+     "pr_auc": 0.0155,
+     "brier": 0.00879
+    }
+   },
+   "quadriceps": {
+    "model": {
+     "prevalence": 0.00215,
+     "n_pos": 22,
+     "n": 10239,
+     "roc_auc": 0.593,
+     "pr_auc": 0.0032,
+     "brier": 0.00215
+    },
+    "baseline_sport_rate": {
+     "prevalence": 0.00215,
+     "n_pos": 22,
+     "n": 10239,
+     "roc_auc": 0.599,
+     "pr_auc": 0.0045,
+     "brier": 0.00214
+    }
+   },
+   "groin": {
+    "model": {
+     "prevalence": 0.00205,
+     "n_pos": 21,
+     "n": 10239,
+     "roc_auc": 0.688,
+     "pr_auc": 0.0063,
+     "brier": 0.00205
+    },
+    "baseline_sport_rate": {
+     "prevalence": 0.00205,
+     "n_pos": 21,
+     "n": 10239,
+     "roc_auc": 0.588,
+     "pr_auc": 0.0026,
+     "brier": 0.00205
+    }
+   },
+   "calf_achilles": {
+    "model": {
+     "prevalence": 0.00566,
+     "n_pos": 58,
+     "n": 10239,
+     "roc_auc": 0.673,
+     "pr_auc": 0.0134,
+     "brier": 0.00562
+    },
+    "baseline_sport_rate": {
+     "prevalence": 0.00566,
+     "n_pos": 58,
+     "n": 10239,
+     "roc_auc": 0.623,
+     "pr_auc": 0.009,
+     "brier": 0.00563
+    }
+   },
+   "knee": {
+    "model": {
+     "prevalence": 0.01055,
+     "n_pos": 108,
+     "n": 10239,
+     "roc_auc": 0.72,
+     "pr_auc": 0.0361,
+     "brier": 0.01033
+    },
+    "baseline_sport_rate": {
+     "prevalence": 0.01055,
+     "n_pos": 108,
+     "n": 10239,
+     "roc_auc": 0.504,
+     "pr_auc": 0.0107,
+     "brier": 0.01044
+    }
+   },
+   "ankle": {
+    "model": {
+     "prevalence": 0.0085,
+     "n_pos": 87,
+     "n": 10239,
+     "roc_auc": 0.656,
+     "pr_auc": 0.0205,
+     "brier": 0.0084
+    },
+    "baseline_sport_rate": {
+     "prevalence": 0.0085,
+     "n_pos": 87,
+     "n": 10239,
+     "roc_auc": 0.583,
+     "pr_auc": 0.0105,
+     "brier": 0.00843
+    }
+   },
+   "foot": {
+    "model": {
+     "prevalence": 0.004,
+     "n_pos": 41,
+     "n": 10239,
+     "roc_auc": 0.704,
+     "pr_auc": 0.0207,
+     "brier": 0.00398
+    },
+    "baseline_sport_rate": {
+     "prevalence": 0.004,
+     "n_pos": 41,
+     "n": 10239,
+     "roc_auc": 0.607,
+     "pr_auc": 0.0052,
+     "brier": 0.00399
+    }
+   },
+   "hip": {
+    "model": {
+     "prevalence": 0.00381,
+     "n_pos": 39,
+     "n": 10239,
+     "roc_auc": 0.534,
+     "pr_auc": 0.0065,
+     "brier": 0.00379
+    },
+    "baseline_sport_rate": {
+     "prevalence": 0.00381,
+     "n_pos": 39,
+     "n": 10239,
+     "roc_auc": 0.474,
+     "pr_auc": 0.0036,
+     "brier": 0.0038
+    }
+   },
+   "lower_back": {
+    "model": {
+     "prevalence": 0.00703,
+     "n_pos": 72,
+     "n": 10239,
+     "roc_auc": 0.609,
+     "pr_auc": 0.0141,
+     "brier": 0.00698
+    },
+    "baseline_sport_rate": {
+     "prevalence": 0.00703,
+     "n_pos": 72,
+     "n": 10239,
+     "roc_auc": 0.535,
+     "pr_auc": 0.009,
+     "brier": 0.00699
+    }
+   },
+   "shoulder": {
+    "model": {
+     "prevalence": 0.00762,
+     "n_pos": 78,
+     "n": 10239,
+     "roc_auc": 0.686,
+     "pr_auc": 0.0178,
+     "brier": 0.00757
+    },
+    "baseline_sport_rate": {
+     "prevalence": 0.00762,
+     "n_pos": 78,
+     "n": 10239,
+     "roc_auc": 0.654,
+     "pr_auc": 0.0124,
+     "brier": 0.00754
+    }
+   },
+   "elbow_wrist": {
+    "model": {
+     "prevalence": 0.00459,
+     "n_pos": 47,
+     "n": 10239,
+     "roc_auc": 0.632,
+     "pr_auc": 0.008,
+     "brier": 0.00457
+    },
+    "baseline_sport_rate": {
+     "prevalence": 0.00459,
+     "n_pos": 47,
+     "n": 10239,
+     "roc_auc": 0.6,
+     "pr_auc": 0.0058,
+     "brier": 0.00457
+    }
+   },
+   "head_neck": {
+    "model": {
+     "prevalence": 0.00635,
+     "n_pos": 65,
+     "n": 10239,
+     "roc_auc": 0.727,
+     "pr_auc": 0.0113,
+     "brier": 0.0063
+    },
+    "baseline_sport_rate": {
+     "prevalence": 0.00635,
+     "n_pos": 65,
+     "n": 10239,
+     "roc_auc": 0.739,
+     "pr_auc": 0.0155,
+     "brier": 0.00629
+    }
+   }
+  },
+  "temporal_split": {
+   "train": "80% of athletes, days < 112",
+   "test": "other 20% of athletes, days >= 119"
+  },
+  "permutation_importance_auc_drop": {
+   "any": {
+    "injury_history": 0.093,
+    "monotony_strain": 0.0138,
+    "sleep": 0.0088,
+    "age_growth": 0.0043,
+    "wellness": 0.0017,
+    "chronic_fitness": 0.0014,
+    "sport": 0.0011,
+    "prevention_programmes": 0.0005,
+    "asymmetry": 0.0003,
+    "match_exposure": 0.0,
+    "neuromuscular_fatigue": -0.0002,
+    "acute_load": -0.0003,
+    "load_spike_acwr": -0.0006,
+    "sex_body": -0.0021
+   },
+   "hamstring": {
+    "injury_history": 0.0626,
+    "sport": 0.0131,
+    "age_growth": 0.0116,
+    "prevention_programmes": 0.0111,
+    "asymmetry": 0.0034,
+    "wellness": 0.0011,
+    "load_spike_acwr": 0.0007,
+    "sleep": 0.0005,
+    "chronic_fitness": 0.0003,
+    "match_exposure": -0.0001,
+    "neuromuscular_fatigue": -0.0005,
+    "sex_body": -0.0015,
+    "acute_load": -0.0027,
+    "monotony_strain": -0.0049
+   },
+   "groin": {
+    "injury_history": 0.0546,
+    "sport": 0.0484,
+    "load_spike_acwr": 0.0278,
+    "sex_body": 0.0152,
+    "sleep": 0.0101,
+    "age_growth": 0.0065,
+    "monotony_strain": 0.0061,
+    "asymmetry": 0.0044,
+    "wellness": 0.0026,
+    "prevention_programmes": 0.0004,
+    "match_exposure": 0.0,
+    "acute_load": -0.0028,
+    "chronic_fitness": -0.0091,
+    "neuromuscular_fatigue": -0.012
+   },
+   "calf_achilles": {
+    "sport": 0.1025,
+    "monotony_strain": 0.0304,
+    "injury_history": 0.0278,
+    "sleep": 0.007,
+    "chronic_fitness": 0.0058,
+    "prevention_programmes": 0.0033,
+    "asymmetry": 0.0031,
+    "age_growth": 0.003,
+    "neuromuscular_fatigue": 0.0003,
+    "match_exposure": 0.0,
+    "wellness": -0.0005,
+    "load_spike_acwr": -0.0006,
+    "sex_body": -0.0009,
+    "acute_load": -0.0013
+   },
+   "knee": {
+    "injury_history": 0.0633,
+    "sex_body": 0.013,
+    "chronic_fitness": 0.0104,
+    "sleep": 0.01,
+    "age_growth": 0.0075,
+    "prevention_programmes": 0.0062,
+    "monotony_strain": 0.0057,
+    "wellness": 0.0053,
+    "acute_load": 0.0022,
+    "load_spike_acwr": 0.0003,
+    "match_exposure": 0.0,
+    "neuromuscular_fatigue": -0.0004,
+    "asymmetry": -0.0024,
+    "sport": -0.0046
+   },
+   "ankle": {
+    "injury_history": 0.0455,
+    "sleep": 0.0371,
+    "sport": 0.0331,
+    "age_growth": 0.02,
+    "chronic_fitness": 0.0098,
+    "load_spike_acwr": 0.0083,
+    "monotony_strain": 0.0007,
+    "asymmetry": 0.0004,
+    "wellness": 0.0003,
+    "match_exposure": 0.0,
+    "sex_body": -0.0002,
+    "prevention_programmes": -0.0004,
+    "neuromuscular_fatigue": -0.0006,
+    "acute_load": -0.0039
+   },
+   "shoulder": {
+    "sport": 0.0589,
+    "injury_history": 0.031,
+    "acute_load": 0.0282,
+    "load_spike_acwr": 0.008,
+    "monotony_strain": 0.0062,
+    "asymmetry": 0.0058,
+    "age_growth": 0.0039,
+    "sleep": 0.0025,
+    "prevention_programmes": 0.0,
+    "neuromuscular_fatigue": -0.0003,
+    "wellness": -0.0006,
+    "chronic_fitness": -0.0009,
+    "sex_body": -0.0066,
+    "match_exposure": -0.0068
+   },
+   "head_neck": {
+    "sport": 0.1729,
+    "injury_history": 0.0203,
+    "age_growth": 0.0169,
+    "wellness": 0.009,
+    "acute_load": 0.0073,
+    "neuromuscular_fatigue": 0.0055,
+    "sex_body": 0.0031,
+    "sleep": 0.0026,
+    "chronic_fitness": 0.0001,
+    "load_spike_acwr": -0.0009,
+    "prevention_programmes": -0.0012,
+    "match_exposure": -0.0013,
+    "asymmetry": -0.0032,
+    "monotony_strain": -0.0064
+   }
+  },
+  "injury_type": {
+   "n_events": 4154,
+   "model_accuracy": 0.564,
+   "model_log_loss": 1.005,
+   "baseline_region_majority_accuracy": 0.57,
+   "baseline_region_frequency_log_loss": 0.933,
+   "shipped": "frequency"
+  },
+  "risk_bands_any": {
+   "moderate": 0.0564,
+   "high": 0.0922
+  },
+  "label_prevalence": {
+   "any": 0.06365,
+   "hamstring": 0.00658,
+   "quadriceps": 0.00342,
+   "groin": 0.00285,
+   "calf_achilles": 0.00438,
+   "knee": 0.01042,
+   "ankle": 0.00983,
+   "foot": 0.00413,
+   "hip": 0.00237,
+   "lower_back": 0.00497,
+   "shoulder": 0.00617,
+   "elbow_wrist": 0.00421,
+   "head_neck": 0.00435
+  }
+ },
+ "real": {
+  "source": {
+   "doi": "10.34894/UWU9PV",
+   "licence": "CC0 1.0",
+   "rows": 42798,
+   "athletes": 74,
+   "positives": 575,
+   "prevalence": 0.01344,
+   "label": "injury on the day following a 3-week window (binary, no body region)"
+  },
+  "app_features": {
+   "grouped_cv": {
+    "prevalence": 0.01344,
+    "n_pos": 575,
+    "n": 42798,
+    "roc_auc": 0.566,
+    "pr_auc": 0.0162,
+    "brier": 0.01326
+   },
+   "calibration": {
+    "bins": [
+     {
+      "pred": 0.005,
+      "obs": 0.0047,
+      "n": 4279
+     },
+     {
+      "pred": 0.0082,
+      "obs": 0.0119,
+      "n": 4281
+     },
+     {
+      "pred": 0.01,
+      "obs": 0.014,
+      "n": 4280
+     },
+     {
+      "pred": 0.0113,
+      "obs": 0.013,
+      "n": 4230
+     },
+     {
+      "pred": 0.0122,
+      "obs": 0.0109,
+      "n": 4315
+     },
+     {
+      "pred": 0.0131,
+      "obs": 0.0137,
+      "n": 4293
+     },
+     {
+      "pred": 0.0143,
+      "obs": 0.0136,
+      "n": 4280
+     },
+     {
+      "pred": 0.0159,
+      "obs": 0.0168,
+      "n": 4280
+     },
+     {
+      "pred": 0.0183,
+      "obs": 0.0194,
+      "n": 4279
+     },
+     {
+      "pred": 0.026,
+      "obs": 0.0164,
+      "n": 4281
+     }
+    ],
+    "ece": 0.0024
+   },
+   "temporal": {
+    "prevalence": 0.01695,
+    "n_pos": 177,
+    "n": 10440,
+    "roc_auc": 0.541,
+    "pr_auc": 0.0192,
+    "brier": 0.01672
+   },
+   "temporal_note": "train Date < 1913, test Date >= 1934 (3-week gap; athletes overlap)"
+  },
+  "all_features_benchmark": {
+   "grouped_cv": {
+    "prevalence": 0.01344,
+    "n_pos": 575,
+    "n": 42798,
+    "roc_auc": 0.622,
+    "pr_auc": 0.019,
+    "brier": 0.01327
+   },
+   "calibration": {
+    "bins": [
+     {
+      "pred": 0.0052,
+      "obs": 0.0042,
+      "n": 4280
+     },
+     {
+      "pred": 0.0068,
+      "obs": 0.0063,
+      "n": 4280
+     },
+     {
+      "pred": 0.0082,
+      "obs": 0.0075,
+      "n": 4280
+     },
+     {
+      "pred": 0.0096,
+      "obs": 0.0138,
+      "n": 4279
+     },
+     {
+      "pred": 0.0109,
+      "obs": 0.0106,
+      "n": 4054
+     },
+     {
+      "pred": 0.0121,
+      "obs": 0.0144,
+      "n": 4506
+     },
+     {
+      "pred": 0.0138,
+      "obs": 0.0159,
+      "n": 4279
+     },
+     {
+      "pred": 0.0163,
+      "obs": 0.0182,
+      "n": 4280
+     },
+     {
+      "pred": 0.0204,
+      "obs": 0.022,
+      "n": 4280
+     },
+     {
+      "pred": 0.0345,
+      "obs": 0.0213,
+      "n": 4280
+     }
+    ],
+    "ece": 0.0028
+   },
+   "temporal": {
+    "prevalence": 0.01695,
+    "n_pos": 177,
+    "n": 10440,
+    "roc_auc": 0.59,
+    "pr_auc": 0.0252,
+    "brier": 0.01674
+   },
+   "temporal_note": "train Date < 1913, test Date >= 1934 (3-week gap; athletes overlap)"
+  },
+  "baseline_prevalence": {
+   "roc_auc": 0.5,
+   "pr_auc": 0.01344,
+   "brier": 0.01325
+  },
+  "univariate_auc": {
+   "rest_days_w3": 0.432,
+   "sessions_w3": 0.567,
+   "hard_sessions_w3": 0.56,
+   "sessions_w2": 0.556,
+   "rest_days_w2": 0.45,
+   "hard_sessions_w2": 0.546,
+   "max_km_day_w3": 0.544,
+   "km_ratio_w1_chronic": 0.456,
+   "km_w3": 0.536,
+   "km_ratio_w1_w2": 0.467,
+   "max_km_day_w2": 0.531,
+   "rest_days_w1": 0.47,
+   "km_w2": 0.529,
+   "sessions_w1": 0.527,
+   "hard_sessions_w1": 0.526,
+   "km_3wk": 0.524,
+   "max_km_day_w1": 0.508,
+   "km_w1": 0.503
+  },
+  "injury_rate_by_km_ratio": [
+   {
+    "range": "0-0.8",
+    "n": 10114,
+    "rate": 0.0166
+   },
+   {
+    "range": "0.8-1.0",
+    "n": 11011,
+    "rate": 0.0153
+   },
+   {
+    "range": "1.0-1.2",
+    "n": 10367,
+    "rate": 0.0123
+   },
+   {
+    "range": "1.2-1.5",
+    "n": 5460,
+    "rate": 0.0134
+   },
+   {
+    "range": "1.5-+",
+    "n": 2689,
+    "rate": 0.0067
+   }
+  ]
+ }
+}
