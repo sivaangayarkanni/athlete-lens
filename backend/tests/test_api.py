@@ -2,6 +2,7 @@ from datetime import date, timedelta
 
 from fastapi.testclient import TestClient
 
+from backend.app.injury.catalog import REGIONS
 from backend.app.main import app
 
 
@@ -77,8 +78,10 @@ def test_seed_roster_shape(client):
     seeded = {a["name"]: a for a in athletes}
     assert "Meenakshi R" in seeded
     m = seeded["Meenakshi R"]
-    assert m["session_count"] == 14
+    assert m["session_count"] >= 30  # ~8 weeks of daily history
     assert m["latest_risk"] in {"low", "moderate", "high"}
+    assert m["top_region"] in REGIONS
+    assert 0 < m["latest_injury_probability"] < 1
     assert 0 <= m["latest_readiness"] <= 100
 
 
@@ -93,7 +96,7 @@ def test_athlete_filters(client):
 def test_stats(client):
     s = client.get("/api/stats").json()
     assert s["athlete_count"] >= 8
-    assert s["session_count"] >= 8 * 14
+    assert s["session_count"] >= 8 * 30
     assert sum(s["risk_bands"].values()) == s["athlete_count"]
     assert s["high_risk"] == s["risk_bands"]["high"]
     assert 0 < s["avg_readiness"] <= 100
@@ -161,14 +164,15 @@ def test_session_rules(client):
 
 def test_seeded_trend_reports_acwr(client):
     t = client.get("/api/athletes/1").json()["trend"]
-    assert len(t) == 14
+    assert len(t) >= 30
     assert t[0]["acwr"] is None and t[-1]["acwr"] is not None and t[-1]["acwr"] > 0
 
 
 def test_what_if_uses_athlete_baseline(client):
     base = client.post("/api/analyze", json={"athlete_id": 8}).json()
     rested = client.post("/api/analyze", json={"athlete_id": 8, "sleep_hours": 9, "rest_days_last_7": 3, "rpe": 4,
-                                               "sessions_last_7": 3, "wellness": 9}).json()
+                                               "sessions_last_7": 3, "wellness": 9, "load_change_pct": -30,
+                                               "extra_rest_days": 2}).json()
     assert rested["injury_probability"] < base["injury_probability"]
     assert rested["readiness_score"] > base["readiness_score"]
     assert client.post("/api/analyze", json={"athlete_id": 424242}).status_code == 404
@@ -176,11 +180,14 @@ def test_what_if_uses_athlete_baseline(client):
 
 def test_analysis_is_deterministic_and_sensitive(client):
     good = dict(sleep_hours=8.5, rpe=5, rest_days_last_7=3, sessions_last_7=4, wellness=9)
-    bad = dict(sleep_hours=4.5, rpe=9.5, rest_days_last_7=0, sessions_last_7=9, wellness=3, duration_min=140)
+    bad = dict(sleep_hours=4.5, rpe=9.5, rest_days_last_7=0, sessions_last_7=9, wellness=3, duration_min=140,
+               chronic_sessions_per_week=4, chronic_duration_min=60, matches_last_7=2)
     a = client.post("/api/analyze", json=good).json()
     assert a == client.post("/api/analyze", json=good).json()
     b = client.post("/api/analyze", json=bad).json()
-    assert b["injury_risk"] == "high"
+    assert b["injury_risk"] in {"moderate", "high"}
+    assert b["injury_probability"] > 1.5 * a["injury_probability"]
+    assert b["injury"]["load"]["acwr"] > 1.5 and b["injury"]["load"]["sleep_debt_7"] > 15
     assert b["overtraining"] is True
     assert b["plan_72h"][0]["intensity"] == "rest"
     assert a["readiness_score"] > b["readiness_score"]
@@ -219,11 +226,13 @@ def test_sample_csv_imports(client):
 
 def test_model_card_has_real_metrics(client):
     card = client.get("/api/model").json()
-    inj, perf = card["metrics"]["injury"], card["metrics"]["performance"]
-    assert card["training_data"]["cohort_size"] == 2400
-    assert card["training_data"]["test_rows"] == 480
-    assert 0.5 < inj["holdout_roc_auc"] <= 1
+    perf = card["metrics"]["performance"]
+    inj = card["metrics"]["injury_any_grouped_cv"]
+    assert card["training_data"]["performance"]["cohort_size"] == 2400
+    assert card["training_data"]["performance"]["test_rows"] == 480
     assert perf["holdout_mae"] < perf["baseline_mean_mae"]
-    assert len(card["feature_importance"]) == 12
-    assert card["limitations"]
+    assert inj["model"]["roc_auc"] > inj["baseline_sport_rate"]["roc_auc"]
+    assert card["training_data"]["injury"]["real"]["licence"] == "CC0 1.0"
+    assert card["injury_features"] > 50
+    assert card["limitations"] and any("SIMULATED" in item for item in card["limitations"])
     assert client.get("/api/sports").json()[0] == "Athletics"
