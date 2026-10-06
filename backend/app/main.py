@@ -455,7 +455,7 @@ def athlete_region_detail(athlete_id: int, region: schemas.Region, db: Session =
     prior = [r for r in (athlete.injury_history or "").split(",") if r.strip() == region]
     return {
         "athlete_id": athlete.id, "as_of": summary["as_of"], **item,
-        "rank": 1 + sorted(summary["regions"], key=lambda r: -r["relative_risk"]).index(item),
+        "rank": 1 + sorted(summary["regions"], key=lambda r: -r["probability"]).index(item),
         "drivers": drivers, "counterfactuals": cfs,
         "trend": {"dates": rt["dates"], "probability": rt["regions"][region]},
         "history": history, "previous_injuries_before_tracking": len(prior),

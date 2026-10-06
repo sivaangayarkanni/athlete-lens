@@ -102,7 +102,8 @@ class InjuryEngine:
                 item["likely_type_label"] = TYPE_LABELS[item["likely_type"]]
                 item["type_probs"] = tp
             regions.append(item)
-        ranked = sorted(regions, key=lambda i: -i["relative_risk"])
+        likely = sorted(regions, key=lambda i: -i["probability"])        # most likely (absolute 7-day probability)
+        elevated = sorted(regions, key=lambda i: -i["relative_risk"])   # most elevated vs the sport average
         # expected injury-type mix: sum_r p_r * P(type | region)
         mix = {t: 0.0 for t in INJURY_TYPES}
         if with_types:
@@ -115,7 +116,8 @@ class InjuryEngine:
                         "relative_risk": round(p["any"] / max(means["any"], 1e-6), 2), "sport_average": means["any"],
                         "horizon_days": 7},
             "regions": regions,
-            "top_regions": [i["region"] for i in ranked[:3]],
+            "top_regions": [i["region"] for i in likely[:3]],
+            "elevated_regions": [i["region"] for i in elevated[:3] if i["relative_risk"] >= 1.3],
             "type_mix": [{"type": t, "label": TYPE_LABELS[t], "share": round(v / tot, 3)} for t, v in sorted(mix.items(), key=lambda kv: -kv[1]) if v > 0],
         }
 

@@ -208,6 +208,7 @@ class InjuryRiskSummary(BaseModel):
     overall: OverallRisk
     regions: list[RegionRisk]
     top_regions: list[Region]
+    elevated_regions: list[Region] = []
     type_mix: list[dict]
     drivers: dict | None = None
     load: dict | None = None
