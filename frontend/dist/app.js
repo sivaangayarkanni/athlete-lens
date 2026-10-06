@@ -154,7 +154,7 @@
   }
 
   function regionTable(regions, selected) {
-    const rows = [...regions].sort((a, b) => b.relative_risk - a.relative_risk).map((r) => `
+    const rows = [...regions].sort((a, b) => b.probability - a.probability).map((r) => `
       <tr class="click${selected === r.region ? " sel" : ""}" data-region="${r.region}"><td><i class="swatch" style="background:${rrColor(r.relative_risk)}"></i>${esc(r.label)}</td>
       <td class="mono">${(r.probability * 100).toFixed(2)}%</td><td class="mono">${fmt(r.relative_risk, 2)}×</td><td>${levelBadge(r.level)}</td>
       <td class="small muted">${esc(r.likely_type_label || "")}</td></tr>`).join("");
@@ -173,9 +173,10 @@
           <div class="card"><div class="row" style="gap:18px">${ring(o.probability * 400, RISK_COLOR[o.band], "lg", "7-day risk", (o.probability * 100).toFixed(1) + "%")}
             <div class="stack" style="gap:6px"><div class="muted small">Chance of any time-loss injury in the next ${o.horizon_days} days</div>
             <div class="row">${badge(o.band)}<span class="muted small">${fmt(o.relative_risk, 2)}× the ${esc(inj.sport || "sport")} average (${(o.sport_average * 100).toFixed(1)}%)</span></div>
-            <div class="small">Most likely: ${top.map((r) => `<a href="#" data-region="${r.region}"><b>${esc(REGION_SHORT[r.region])}</b></a> <span class="muted">(${fmt(r.relative_risk, 1)}×, ${esc((r.likely_type_label || "").toLowerCase())})</span>`).join(" · ")}</div>
+            <div class="small">Most likely: ${top.map((r) => `<a href="#" data-region="${r.region}"><b>${esc(REGION_SHORT[r.region])}</b></a> <span class="muted">(${(r.probability * 100).toFixed(1)}%, ${esc((r.likely_type_label || "").toLowerCase())})</span>`).join(" · ")}</div>
+            ${(inj.elevated_regions || []).length ? `<div class="small">Most elevated vs sport: ${inj.elevated_regions.map((k) => { const r = inj.regions.find((x) => x.region === k); return `<a href="#" data-region="${k}"><b>${esc(REGION_SHORT[k])}</b></a> <span class="muted">(${fmt(r.relative_risk, 1)}×)</span>`; }).join(" · ")}</div>` : ""}
             ${load.history_padded ? `<div class="muted small">⚠ ${load.synthetic_history ? "Synthetic 4-week history built from the form." : "Less than 4 weeks logged: first week repeated to estimate chronic load."}</div>` : ""}</div></div></div>
-          <div class="card"><div class="card-head"><h2>All regions</h2><span class="muted small">calibrated 7-day probability</span></div>${regionTable(inj.regions, selected)}</div>
+          <div class="card"><div class="card-head"><h2>All regions</h2><span class="muted small">calibrated 7-day probability, most likely first</span></div>${regionTable(inj.regions, selected)}</div>
         </div>
       </div>
       <div class="grid g3" style="margin-top:16px">

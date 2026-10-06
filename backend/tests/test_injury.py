@@ -126,6 +126,10 @@ def test_predict_outputs_calibrated_probabilities(athlete_row):
     assert all(0 < float(v[0]) < 1 for v in p.values())
     s = engine.summarize(x, "Football")
     assert len(s["regions"]) == 12 and len(s["top_regions"]) == 3
+    by_p = sorted(s["regions"], key=lambda r: -r["probability"])
+    assert s["top_regions"] == [r["region"] for r in by_p[:3]]          # most likely = highest absolute probability
+    rr = {r["region"]: r["relative_risk"] for r in s["regions"]}
+    assert all(rr[k] >= 1.3 for k in s["elevated_regions"])
     assert s["overall"]["band"] in {"low", "moderate", "high"}
     assert abs(sum(t["share"] for t in s["type_mix"]) - 1) < 0.01
     for r in s["regions"]:
@@ -238,6 +242,9 @@ def test_risk_trend_and_what_if(client):
 
 def test_squad_heatmap(client):
     h = client.get("/api/squad/heatmap").json()
+    for row in h["athletes"]:   # stored top region agrees with the live summary's most likely region
+        live = client.get(f"/api/athletes/{row['athlete_id']}/injury-risk", params={"explain": "none"}).json()
+        assert row["top_region"] == live["top_regions"][0]
     assert [r["region"] for r in h["regions"]] == REGIONS
     assert len(h["athletes"]) >= 8
     row = h["athletes"][0]
